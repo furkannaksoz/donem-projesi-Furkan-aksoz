@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimasiPulse - Sözlük</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 1rem 2rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        body.light-mode .navbar {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+        }
+        body.light-mode .navbar-brand {
+            color: #1e293b;
+        }
+        .navbar-brand:hover {
+            color: #00c4ff;
+        }
+        body.light-mode .navbar-brand:hover {
+            color: #2563eb;
+        }
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+        }
+        body.light-mode .navbar a {
+            color: #1e293b;
+        }
+        .navbar a:hover {
+            color: #00c4ff;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        body.light-mode .navbar a:hover {
+            color: #2563eb;
+        }
+        .navbar a.active {
+            color: #00c4ff;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        body.light-mode .navbar a.active {
+            color: #2563eb;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .navbar a i {
+            margin-right: 5px;
+        }
+        .simasi-pulse-btn, .simachi-btn {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        body.light-mode .simasi-pulse-btn,
+        body.light-mode .simachi-btn {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .simasi-pulse-btn:hover, .simachi-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+        }
+        body.light-mode .simasi-pulse-btn:hover,
+        body.light-mode .simachi-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #2a9d8f);
+            color: #ffffff;
+        }
+        .theme-toggle-btn {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        body.light-mode .theme-toggle-btn {
+            background: linear-gradient(135deg, #f59e0b, #facc15);
+            color: #1e293b;
+        }
+        .theme-toggle-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        body.light-mode .theme-toggle-btn:hover {
+            background: linear-gradient(135deg, #d97706, #eab308);
+        }
+        .theme-toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .theme-toggle-btn:hover::before {
+            left: 100%;
+        }
+        .theme-toggle-btn i {
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .content-wrapper {
+            display: flex;
+            margin: 2rem 0;
+            gap: 5px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .chat-container {
+            max-width: 700px;
+            background: #1e293b;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        body.light-mode .chat-container {
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: 4px solid #1e40af;
+        }
+        body.light-mode .header {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            border-bottom: 4px solid #2563eb;
+            color: #1e293b;
+        }
+        #chatbox {
+            height: 500px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: #2d3748;
+        }
+        body.light-mode #chatbox {
+            background: #f0f4f8;
+        }
+        #chatbox p {
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: slideIn 0.4s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        body.light-mode #chatbox p {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .user-message {
+            background: linear-gradient(135deg, #60a5fa, #2563eb);
+            color: #ffffff;
+            margin-left: auto;
+            text-align: right;
+        }
+        body.light-mode .user-message {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .bot-message {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: #e2e8f0;
+        }
+        body.light-mode .bot-message {
+            background: linear-gradient(135deg, #e9ecef, #d1d8e0);
+            color: #1e293b;
+        }
+        .input-area {
+            display: flex;
+            padding: 1rem;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        body.light-mode .input-area {
+            background: #ffffff;
+            border-top: 1px solid #d1d8e0;
+        }
+        #userInput {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            background: #334155;
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        body.light-mode #userInput {
+            background: #e9ecef;
+            color: #1e293b;
+        }
+        #userInput:focus {
+            background: #475569;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+        body.light-mode #userInput:focus {
+            background: #d1d8e0;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+        button {
+            padding: 0.8rem 1.5rem;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        body.light-mode button {
+            background: #4a90e2;
+            color: #1e293b;
+        }
+        button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 64, 175, 0.4);
+        }
+        body.light-mode button:hover {
+            background: #2563eb;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        body.light-mode ::-webkit-scrollbar-track {
+            background: #f0f4f8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+            border-radius: 4px;
+        }
+        body.light-mode ::-webkit-scrollbar-thumb {
+            background: #4a90e2;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+        body.light-mode ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+        .side-panel {
+            width: 300px;
+            background: #1e293b;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            color: #e2e8f0;
+            border: 1px solid #2563eb;
+        }
+        body.light-mode .side-panel {
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #4a90e2;
+            color: #1e293b;
+        }
+        .side-panel .toggle-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 1rem;
+        }
+        body.light-mode .side-panel .toggle-btn {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .side-panel .toggle-btn:hover {
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            transform: translateY(-2px);
+        }
+        body.light-mode .side-panel .toggle-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #2a9d8f);
+        }
+        .side-panel .format-text {
+            margin: 0;
+            font-size: 1rem;
+            color: #e2e8f0;
+            display: none;
+            line-height: 1.5;
+            padding-top: 1rem;
+        }
+        body.light-mode .side-panel .format-text {
+            color: #1e293b;
+        }
+        .voice-options {
+            background: #1e293b;
+            border: 1px solid #2563eb;
+            border-radius: 10px;
+            padding: 8px;
+            display: none;
+            margin-top: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        body.light-mode .voice-options {
+            background: #ffffff;
+            border: 1px solid #4a90e2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .voice-options label {
+            display: flex;
+            align-items: center;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        body.light-mode .voice-options label {
+            color: #1e293b;
+        }
+        .voice-options label:hover {
+            color: #00c4ff;
+        }
+        body.light-mode .voice-options label:hover {
+            color: #2563eb;
+        }
+        .voice-options input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #2563eb;
+            border-radius: 4px;
+            margin-right: 8px;
+            background: #334155;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        body.light-mode .voice-options input[type="checkbox"] {
+            border: 2px solid #4a90e2;
+            background: #e9ecef;
+        }
+        .voice-options input[type="checkbox"]:checked {
+            background: #2563eb;
+            border-color: #1e40af;
+        }
+        body.light-mode .voice-options input[type="checkbox"]:checked {
+            background: #4a90e2;
+            border-color: #2563eb;
+        }
+        .voice-options input[type="checkbox"]:checked::after {
+            content: '\2713';
+            display: block;
+            text-align: center;
+            color: #ffffff;
+            font-size: 12px;
+            line-height: 16px;
+        }
+        body.light-mode .voice-options input[type="checkbox"]:checked::after {
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">Simasi</a>
+        <ul>
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="hakkinda.html">Hakkında</a></li>
+            <li><a href="simasipulse.html" class="simasi-pulse-btn active"><i class="bi bi-book"></i> SimasiPulse</a></li>
+            <li><a href="simachi.html" class="simachi-btn"><i class="bi bi-puzzle"></i> Simachi</a></li>
+            <li><button class="theme-toggle-btn" onclick="toggleTheme()"><i class="bi bi-moon-stars-fill"></i> Mod</button></li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="chat-container">
+            <div class="header">SimasiPulse - Sözlük</div>
+            <div id="chatbox"></div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Kelime veya cümle yaz (ör: elma)" onkeydown="if(event.key === 'Enter') sendMessage();">
+                <div>
+                    <button id="speakBtn" onclick="toggleVoiceOptions('speak')">Yazıyı Seslendir</button>
+                    <div id="speakOptions" class="voice-options">
+                        <label><input type="checkbox" id="speakTr" onchange="setSpeakLang('tr-TR')"> Türkçe Olarak Oku</label>
+                        <label><input type="checkbox" id="speakEn" onchange="setSpeakLang('en-GB')"> İngilizce Olarak Oku</label>
+                    </div>
+                </div>
+                <div>
+                    <button id="speakResponseBtn" onclick="toggleVoiceOptions('speakResponse')">Sesli Yanıtla</button>
+                    <div id="speakResponseOptions" class="voice-options">
+                        <label><input type="checkbox" id="responseTr" onchange="setResponseLang('tr-TR')"> Türkçe Olarak Oku</label>
+                        <label><input type="checkbox" id="responseEn" onchange="setResponseLang('en-GB')"> İngilizce Olarak Oku</label>
+                    </div>
+                </div>
+                <div>
+                    <button id="sendBtn" onclick="toggleVoiceOptions('send')">Mesaj Gönder</button>
+                    <div id="sendOptions" class="voice-options">
+                        <label><input type="checkbox" id="sendTr" onchange="sendWithVoice('tr-TR')"> Türkçe Olarak Oku</label>
+                        <label><input type="checkbox" id="sendEn" onchange="sendWithVoice('en-GB')"> İngilizce Olarak Oku</label>
+                        <label><input type="checkbox" id="sendNoVoice" onchange="sendWithVoice(null)"> Sessiz Gönder</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <button class="toggle-btn" onclick="toggleFormat()">Öğretme Formatı</button>
+            <div id="formatText" class="format-text">
+                <strong>SimasiPulse’a Nasıl Öğretirim?</strong><br><br>
+                <b>1. Kelime Öğretme:</b><br>
+                - Türkçe’den İngilizce’ye: <code>elma = apple</code> veya <code>kelime öğret elma = apple</code><br>
+                - İngilizce’den Türkçe’ye: <code>apple = elma</code> veya <code>kelime öğret (ing-tr) apple = elma</code><br>
+                - Not: Tek kelime olmalı, boşluk olmamalı!<br><br>
+                <b>2. Cümle Öğretme:</b><br>
+                - Türkçe’den İngilizce’ye: <code>Elma kırmızıdır = The apple is red</code><br>
+                - İngilizce’den Türkçe’ye: <code>The apple is red = Elma kırmızıdır</code><br>
+                - Not: Cümlede boşluk olmalı, birden fazla kelime içermeli!<br><br>
+                <b>Örnek Kullanım:</b><br>
+                - "kitap = book" → "Harika, kelime olarak 'kitap', 'book' demek öğrendim!"<br>
+                - "Kedi uyuyor = The cat is sleeping" → "Çok güzel, cümle olarak 'Kedi uyuyor', 'The cat is sleeping' demek öğrendim!"<br><br>
+                <b>İpucu:</b> Öğrendiğim şeyleri sorabilirsin: "elma nedir?" veya "kitap ne demek?"
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SimasiPulse {
+            constructor() {
+                this.userKnowledge = this.loadUserKnowledge();
+                this.turkishToEnglish = {};
+                this.englishToTurkish = {};
+                this.loadDictionary();
+            }
+
+            async loadDictionary() {
+                try {
+                    const response = await fetch('sozluk.json');
+                    if (!response.ok) throw new Error('Sözlük dosyası yüklenemedi!');
+                    const data = await response.json();
+                    this.turkishToEnglish = { ...data.turkishToEnglish };
+                    this.englishToTurkish = { ...data.englishToTurkish };
+                    console.log('Sözlük yüklendi:', Object.keys(this.turkishToEnglish).length + ' kelime/cümle');
+                } catch (error) {
+                    console.error('Sözlük yükleme hatası:', error);
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, sözlük dosyasını yüklerken bir hata oluştu!</p>`;
+                }
+            }
+
+            loadUserKnowledge() {
+                const saved = localStorage.getItem('simasiPulseKnowledge');
+                return saved ? JSON.parse(saved) : {};
+            }
+
+            saveUserKnowledge() {
+                localStorage.setItem('simasiPulseKnowledge', JSON.stringify(this.userKnowledge));
+            }
+
+            learnWord(input) {
+                let parts, direction, key, value;
+
+                if (input.includes("kelime öğret (tr-ing)")) {
+                    parts = input.split("kelime öğret (tr-ing)")[1]?.trim();
+                    direction = "tr-ing";
+                } else if (input.includes("kelime öğret (ing-tr)")) {
+                    parts = input.split("kelime öğret (ing-tr)")[1]?.trim();
+                    direction = "ing-tr";
+                } else if (input.includes("kelime öğret")) {
+                    parts = input.split("kelime öğret")[1]?.trim();
+                    direction = "tr-ing";
+                } else {
+                    parts = input;
+                    direction = this.turkishToEnglish[parts.split("=")[0].trim()] ? "ing-tr" : "tr-ing";
+                }
+
+                if (!parts || !parts.includes("=")) {
+                    return "Kusura bakma, kelime öğretmek için 'elma = apple' veya 'apple = elma' şeklinde yazabilir misin?";
+                }
+
+                [key, value] = parts.split("=").map(part => part.trim());
+
+                if (key.includes(" ")) {
+                    return "Pardon, sadece tek kelime öğretebilirim! Cümle için doğrudan yazmayı deneyebilirsin.";
+                }
+
+                if (key && value) {
+                    if (direction === "tr-ing") {
+                        this.turkishToEnglish[key] = value;
+                        this.userKnowledge[key] = value;
+                    } else if (direction === "ing-tr") {
+                        this.englishToTurkish[key] = value;
+                        this.userKnowledge[key] = value;
+                    }
+                    this.saveUserKnowledge();
+                    return `Harika, kelime olarak "${key}", "${value}" demek (${direction}) öğrendim!`;
+                }
+                return "Üzgünüm, bir hata oldu. Lütfen doğru formatta yazmayı deneyebilir misin?";
+            }
+
+            learnSentence(input) {
+                const parts = input.split("öğret")[1]?.trim() || input;
+                if (!parts || !parts.includes("=")) {
+                    return "Kusura bakma, cümle öğretmek için 'Elma kırmızıdır = The apple is red' şeklinde yazabilir misin?";
+                }
+                const [key, value] = parts.split("=").map(part => part.trim());
+                if (!key.includes(" ")) {
+                    return "Pardon, sadece cümle öğretebilirim! Tek kelime için doğrudan yazmayı deneyebilirsin.";
+                }
+                if (key && value) {
+                    this.userKnowledge[key] = value;
+                    this.saveUserKnowledge();
+                    return `Çok güzel, cümle olarak "${key}", "${value}" demek öğrendim!`;
+                }
+                return "Üzgünüm, bir hata oldu. Lütfen doğru formatta yazmayı deneyebilir misin?";
+            }
+
+            translateOrQuery(input) {
+                const cleanInput = input.trim();
+                if (this.userKnowledge[cleanInput]) {
+                    return `"${cleanInput}", "${this.userKnowledge[cleanInput]}" demek.`;
+                }
+                if (this.turkishToEnglish[cleanInput]) {
+                    return `"${cleanInput}", "${this.turkishToEnglish[cleanInput]}" demek.`;
+                }
+                if (this.englishToTurkish[cleanInput]) {
+                    return `"${cleanInput}", "${this.englishToTurkish[cleanInput]}" demek.`;
+                }
+                return `Maalesef "${cleanInput}" hakkında bilgim yok. Dilersen bana öğretebilirsin!`;
+            }
+        }
+
+        const simasiPulse = new SimasiPulse();
+        let speakLang = "tr-TR"; // Varsayılan Türkçe
+        let responseLang = "tr-TR";
+        let sendLang = null;
+
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value.trim();
+            const chatbox = document.getElementById("chatbox");
+            if (!userInput) return;
+
+            chatbox.innerHTML += `<p class="user-message"><b>Sen:</b> ${userInput}</p>`;
+
+            let response = "Kusura bakma, bunu tam anlayamadım. Neyi kastediyorsun?";
+            const lowerInput = userInput.toLowerCase();
+
+            if (lowerInput.includes("kelime öğret") || (lowerInput.includes("=") && !lowerInput.includes(" "))) {
+                response = simasiPulse.learnWord(userInput);
+            } else if (lowerInput.includes("öğret") || (lowerInput.includes("=") && lowerInput.includes(" "))) {
+                response = simasiPulse.learnSentence(userInput);
+            } else if (lowerInput.includes("nedir") || lowerInput.includes("çevir") || lowerInput.includes("ne demek")) {
+                const query = userInput.split(/nedir|çevir|ne demek/)[1]?.trim() || userInput.split(" ")[0].trim();
+                response = simasiPulse.translateOrQuery(query);
+            } else {
+                response = simasiPulse.translateOrQuery(userInput);
+            }
+
+            chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> ${response}</p>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+            document.getElementById("userInput").value = "";
+            return { userInput, response };
+        }
+
+        function toggleFormat() {
+            const formatText = document.getElementById("formatText");
+            formatText.style.display = formatText.style.display === "block" ? "none" : "block";
+        }
+
+        function toggleVoiceOptions(type) {
+            const speakOptions = document.getElementById("speakOptions");
+            const speakResponseOptions = document.getElementById("speakResponseOptions");
+            const sendOptions = document.getElementById("sendOptions");
+
+            if (type === "speak") {
+                speakOptions.style.display = speakOptions.style.display === "block" ? "none" : "block";
+                speakResponseOptions.style.display = "none";
+                sendOptions.style.display = "none";
+                document.getElementById("speakTr").checked = speakLang === "tr-TR";
+                document.getElementById("speakEn").checked = speakLang === "en-GB";
+            } else if (type === "speakResponse") {
+                speakResponseOptions.style.display = speakResponseOptions.style.display === "block" ? "none" : "block";
+                speakOptions.style.display = "none";
+                sendOptions.style.display = "none";
+                document.getElementById("responseTr").checked = responseLang === "tr-TR";
+                document.getElementById("responseEn").checked = responseLang === "en-GB";
+            } else if (type === "send") {
+                sendOptions.style.display = sendOptions.style.display === "block" ? "none" : "block";
+                speakOptions.style.display = "none";
+                speakResponseOptions.style.display = "none";
+                document.getElementById("sendTr").checked = sendLang === "tr-TR";
+                document.getElementById("sendEn").checked = sendLang === "en-GB";
+                document.getElementById("sendNoVoice").checked = sendLang === null;
+            }
+        }
+
+        function setSpeakLang(lang) {
+            speakLang = lang;
+            document.getElementById("speakOptions").style.display = "none";
+            speakText();
+        }
+
+        function setResponseLang(lang) {
+            responseLang = lang;
+            document.getElementById("speakResponseOptions").style.display = "none";
+            speakResponse();
+        }
+
+        function sendWithVoice(lang) {
+            sendLang = lang;
+            document.getElementById("sendOptions").style.display = "none";
+            if (lang === null) {
+                sendMessage();
+            } else {
+                speakResponse(lang);
+            }
+        }
+
+        function speakText() {
+            const userInput = document.getElementById("userInput").value.trim();
+            const chatbox = document.getElementById("chatbox");
+
+            if (!userInput) {
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirmek için bir şey yazman gerekiyor!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                return;
+            }
+
+            if (!window.speechSynthesis) {
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Maalesef tarayıcın sesli okumayı desteklemiyor!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(userInput);
+
+            let voices = window.speechSynthesis.getVoices();
+            if (!voices.length) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    voices = window.speechSynthesis.getVoices();
+                    setVoiceForUtterance(utterance, voices, speakLang);
+                    window.speechSynthesis.speak(utterance);
+                };
+            } else {
+                setVoiceForUtterance(utterance, voices, speakLang);
+                window.speechSynthesis.speak(utterance);
+            }
+
+            utterance.onerror = function(event) {
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            };
+        }
+
+        function speakResponse(lang = responseLang) {
+            const userInput = document.getElementById("userInput").value.trim();
+            const chatbox = document.getElementById("chatbox");
+
+            if (!userInput) {
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, sesli yanıt verebilmem için bir şey yazman gerekiyor!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                return;
+            }
+
+            if (!window.speechSynthesis) {
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Maalesef tarayıcın sesli okumayı desteklemiyor!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                return;
+            }
+
+            const { userInput: input, response } = sendMessage();
+            const combinedText = `${input}. ${response}`;
+            const utterance = new SpeechSynthesisUtterance(combinedText);
+
+            function speakWhenVoicesLoaded() {
+                let voices = window.speechSynthesis.getVoices();
+                if (voices.length === 0) {
+                    window.speechSynthesis.onvoiceschanged = function() {
+                        voices = window.speechSynthesis.getVoices();
+                        speakNow(voices);
+                    };
+                } else {
+                    speakNow(voices);
+                }
+            }
+
+            function speakNow(voices) {
+                window.speechSynthesis.cancel();
+                setVoiceForUtterance(utterance, voices, lang);
+
+                utterance.onerror = function(event) {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                };
+                window.speechSynthesis.speak(utterance);
+            }
+
+            speakWhenVoicesLoaded();
+        }
+
+        function setVoiceForUtterance(utterance, voices, lang) {
+            utterance.lang = lang;
+            if (lang === "tr-TR") {
+                const maleVoice = voices.find(voice => voice.lang === "tr-TR") || voices[0];
+                utterance.voice = maleVoice;
+            } else if (lang === "en-GB") {
+                const ukMaleVoice = voices.find(voice => voice.lang === "en-GB") || voices[0];
+                utterance.voice = ukMaleVoice;
+            }
+        }
+
+        // Tema değiştirme fonksiyonu
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.querySelector('.theme-toggle-btn');
+            body.classList.toggle('light-mode');
+            const isLightMode = body.classList.contains('light-mode');
+            themeBtn.innerHTML = `<i class="bi ${isLightMode ? 'bi-sun-fill' : 'bi-moon-stars-fill'}"></i> Mod`;
+            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+        }
+
+        // Sayfa yüklendiğinde temayı kontrol et
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.querySelector('.theme-toggle-btn').innerHTML = `<i class="bi bi-sun-fill"></i> Mod`;
+            }
+        });
+    </script>
+</body>
+</html>

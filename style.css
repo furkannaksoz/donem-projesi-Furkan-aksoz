@@ -1,116 +1,249 @@
+/* Genel stil ayarları */
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #2a5298, #1e3c72);
     color: #ffffff;
     min-height: 100vh;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 25px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+/* Butonların genel modern stili */
+.btn {
+    position: relative;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Başlık animasyonu */
+/* Neon parlama efekti */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+
+/* Hover'da neon efekt ve pulse animasyonu */
+.btn:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+.btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.3);
+    animation: pulse 1.5s infinite;
+}
+
+/* Active efekti */
+.btn:active {
+    transform: translateY(2px) scale(0.98);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Pulse animasyonu */
+@keyframes pulse {
+    0% { transform: translateY(-4px) scale(1.02); }
+    50% { transform: translateY(-4px) scale(1.04); }
+    100% { transform: translateY(-4px) scale(1.02); }
+}
+
+/* Buton metni ve ikon düzeni */
+.btn i {
+    vertical-align: middle;
+    font-size: 18px;
+}
+.btn span {
+    position: relative;
+    z-index: 1;
+    vertical-align: middle;
+}
+
+/* Primary buton (Ana Sayfa, Seviye Seçimi) */
+.btn-primary {
+    background: linear-gradient(135deg, #4dabf7, #1e90ff);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1e90ff, #1871cc);
+}
+
+/* Warning buton (Quiz Başlat, Tekrar Deneyiniz) */
+.btn-warning {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+}
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ffa500, #e68a00);
+}
+
+/* Secondary buton (Geri, Önceki Soru, Sonraki Soru) */
+.btn-secondary {
+    background: linear-gradient(135deg, #a4b0be, #636e72);
+}
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #636e72, #485460);
+}
+
+/* Info buton (Sonuçları Göster, İleri Adım) */
+.btn-info {
+    background: linear-gradient(135deg, #34e7e4, #0abde3);
+}
+.btn-info:hover {
+    background: linear-gradient(135deg, #0abde3, #0984b3);
+}
+
+/* Genişlik ayarları */
+.w-45 {
+    width: 45% !important;
+}
+.w-30 {
+    width: 30% !important;
+}
+
+/* Quiz kartı ve içerik kartı için stil */
+.quiz-card, .content-card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+/* Quiz seçenekleri için stil */
+.quiz-options {
+    display: grid;
+    gap: 12px;
+}
+.quiz-option {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+.quiz-option:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+.quiz-option.correct {
+    background: rgba(0, 230, 118, 0.6);
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+}
+.quiz-option.wrong {
+    background: rgba(255, 61, 0, 0.6);
+    box-shadow: 0 0 15px rgba(255, 61, 0, 0.5);
+}
+
+/* Hakkında kartı için stil */
+.about-card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Kart içindeki metin */
+.about-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #f5f6fa;
+    transition: opacity 0.3s ease;
+}
+
+/* Kart içindeki bağlantı */
+.about-card a {
+    color: #34e7e4;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.about-card a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Animasyonlar */
 .animate-title {
-    font-size: 2.5rem;
-    font-weight: 700;
     animation: fadeIn 1s ease-in-out;
 }
-
+.animate-card {
+    animation: slideUp 0.8s ease-in-out;
+}
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-/* Seviye butonları */
-.btn-level {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: 50px;
-    transition: all 0.4s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-kolay { background: linear-gradient(45deg, #00c6ff, #0072ff); }
-.btn-orta { background: linear-gradient(45deg, #00ff87, #00b894); }
-.btn-zor { background: linear-gradient(45deg, #ff416c, #ff4b2b); }
-
-.btn-level:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* İçerik kartı */
-.content-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 20px;
-    backdrop-filter: blur(10px); /* Cam efekti */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-/* Quiz kartı */
-.quiz-card {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    animation: slideIn 0.5s ease-out;
-}
-
-.quiz-question {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.quiz-options {
-    display: grid;
-    gap: 15px;
-}
-
-.quiz-option {
-    background: rgba(255, 255, 255, 0.9);
-    color: #2c3e50;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.quiz-option:hover {
-    background: #dfe6e9;
-    transform: translateY(-3px);
-}
-
-.quiz-option.correct {
-    background: #00e676;
-    color: #fff;
-    box-shadow: 0 6px 15px rgba(0, 230, 118, 0.4);
-}
-
-.quiz-option.wrong {
-    background: #ff3d00;
-    color: #fff;
-    box-shadow: 0 6px 15px rgba(255, 61, 0, 0.4);
-}
-
-.quiz-result {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-top: 20px;
-}
-
-/* Animasyon */
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInText {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Zaman sayacı ve puan stili */
+#timer, #final-score {
+    font-size: 16px;
+    font-weight: 600;
+}
+#quiz-completion-message {
+    font-size: 18px;
+    font-weight: 600;
+}
+/* Modern Chatbot Stilleri */
+.modern-chat-card {
+    transition: transform 0.2s ease-in-out;
+}
+.modern-chat-card:hover {
+    transform: translateY(-5px);
+}
+.chatbox-modern {
+    background: linear-gradient(145deg, #ffffff, #f1f3f5);
+    border: 1px solid #e9ecef;
+}
+.chatbox-modern p {
+    margin: 8px 0;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.chatbox-modern b {
+    color: #2a5298;
+}
+.modern-input-group .form-control {
+    border: 1px solid #ced4da;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.modern-input-group .form-control:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 8px rgba(30, 60, 114, 0.3);
+}
+.modern-input-group .btn-primary {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border: none;
+    font-weight: 600;
+}
+.modern-input-group .btn-primary:hover {
+    background: linear-gradient(135deg, #2a5298, #1e3c72);
 }

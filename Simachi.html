@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simachi - Eşleştirme Oyunu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+        }
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 1rem 2rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        body.light-mode .navbar {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+        }
+        body.light-mode .navbar-brand {
+            color: #1e293b;
+        }
+        .navbar-brand:hover {
+            color: #00c4ff;
+        }
+        body.light-mode .navbar-brand:hover {
+            color: #2563eb;
+        }
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+        }
+        body.light-mode .navbar a {
+            color: #1e293b;
+        }
+        .navbar a:hover {
+            color: #00c4ff;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        body.light-mode .navbar a:hover {
+            color: #2563eb;
+        }
+        .navbar a.active {
+            color: #00c4ff;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        body.light-mode .navbar a.active {
+            color: #2563eb;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .navbar a i {
+            margin-right: 5px;
+        }
+        .simasi-pulse-btn, .simachi-btn {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+        }
+        body.light-mode .simasi-pulse-btn,
+        body.light-mode .simachi-btn {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .simasi-pulse-btn:hover, .simachi-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+        }
+        body.light-mode .simasi-pulse-btn:hover,
+        body.light-mode .simachi-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #2a9d8f);
+            color: #ffffff;
+        }
+        .theme-toggle-btn {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        body.light-mode .theme-toggle-btn {
+            background: linear-gradient(135deg, #f59e0b, #facc15);
+            color: #1e293b;
+        }
+        .theme-toggle-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        body.light-mode .theme-toggle-btn:hover {
+            background: linear-gradient(135deg, #d97706, #eab308);
+        }
+        .theme-toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .theme-toggle-btn:hover::before {
+            left: 100%;
+        }
+        .theme-toggle-btn i {
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            background: linear-gradient(135deg, #e6f0fa, #d0e3ff);
+            background: rgba(230, 240, 250, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        body.light-mode .container {
+            background: linear-gradient(135deg, #ffffff, #f0f4f8);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        .header {
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 700;
+            border-bottom: 6px solid #0056b3;
+            position: relative;
+            overflow: hidden;
+        }
+        body.light-mode .header {
+            background: linear-gradient(90deg, #4a90e2, #50c9c3);
+            border-bottom: 6px solid #2563eb;
+            color: #1e293b;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        .game-area {
+            padding: 35px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .level-selection {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .level-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        body.light-mode .level-btn {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .level-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+        body.light-mode .level-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #2a9d8f);
+        }
+        .level-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .level-btn:hover::before {
+            left: 100%;
+        }
+        .level-btn.active {
+            background: linear-gradient(135deg, #28a745, #34c759);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+        body.light-mode .level-btn.active {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .level-btn:disabled {
+            background: linear-gradient(135deg, #6c757d, #adb5bd);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .word-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 35px;
+            gap: 25px;
+        }
+        .word-list {
+            width: 48%;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .word-list {
+            background: rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        .word-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            color: #333;
+        }
+        body.light-mode .word-card {
+            background: linear-gradient(135deg, #f0f4f8, #e9ecef);
+        }
+        .word-card:hover {
+            background: linear-gradient(135deg, #e9ecef, #dfe4ea);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+        body.light-mode .word-card:hover {
+            background: linear-gradient(135deg, #dfe4ea, #d1d8e0);
+        }
+        .word-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        .word-card:hover::before {
+            left: 100%;
+        }
+        .word-card.selected {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: white;
+            transform: scale(1.03);
+            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.5);
+        }
+        body.light-mode .word-card.selected {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+        }
+        .word-card.matched {
+            background: linear-gradient(135deg, #28a745, #34c759);
+            color: white;
+            animation: matchAnimation 0.8s ease;
+            box-shadow: 0 6px 18px rgba(40, 167, 69, 0.5);
+        }
+        body.light-mode .word-card.matched {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        @keyframes matchAnimation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .score-board {
+            margin-top: 25px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 12px 25px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .score-board {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .timer {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .timer {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .result-message {
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 12px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .result-message.success {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.15);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
+        }
+        body.light-mode .result-message.success {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.15);
+        }
+        .result-message.error {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.15);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+        }
+        body.light-mode .result-message.error {
+            color: #e63946;
+            background: rgba(230, 57, 70, 0.15);
+        }
+        .modern-restart-btn, .next-level-btn, .finish-game-btn, .start-game-btn, .show-results-btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 5px;
+        }
+        .start-game-btn {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            color: white;
+        }
+        body.light-mode .start-game-btn {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #1e293b;
+        }
+        .start-game-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00b7ff);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 22px rgba(0, 123, 255, 0.6);
+        }
+        body.light-mode .start-game-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #2a9d8f);
+        }
+        .modern-restart-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+        }
+        body.light-mode .modern-restart-btn {
+            background: linear-gradient(135deg, #e63946, #ff8787);
+        }
+        .modern-restart-btn:hover {
+            background: linear-gradient(135deg, #e74c3c, #e67e22);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 22px rgba(255, 107, 107, 0.6);
+        }
+        body.light-mode .modern-restart-btn:hover {
+            background: linear-gradient(135deg, #d00000, #ff6b6b);
+        }
+        .next-level-btn {
+            background: linear-gradient(135deg, #28a745, #34c759);
+            color: white;
+        }
+        body.light-mode .next-level-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        .next-level-btn:hover {
+            background: linear-gradient(135deg, #218838, #2ecc71);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 22px rgba(40, 167, 69, 0.6);
+        }
+        body.light-mode .next-level-btn:hover {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+        .finish-game-btn {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+        }
+        body.light-mode .finish-game-btn {
+            background: linear-gradient(135deg, #4b7bec, #74c0fc);
+        }
+        .finish-game-btn:hover {
+            background: linear-gradient(135deg, #5a4bcf, #8e7ed9);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 22px rgba(108, 92, 231, 0.6);
+        }
+        body.light-mode .finish-game-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #4a90e2);
+        }
+        .show-results-btn {
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #333;
+        }
+        body.light-mode .show-results-btn {
+            background: linear-gradient(135deg, #f1b93e, #ffda79);
+        }
+        .show-results-btn:hover {
+            background: linear-gradient(135deg, #f1b93e, #fdd872);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 22px rgba(253, 203, 110, 0.6);
+        }
+        body.light-mode .show-results-btn:hover {
+            background: linear-gradient(135deg, #e1a108, #facc15);
+        }
+        .modern-restart-btn::before, .next-level-btn::before, .finish-game-btn::before, .start-game-btn::before, .show-results-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .modern-restart-btn:hover::before, .next-level-btn:hover::before, .finish-game-btn::before, .start-game-btn:hover::before, .show-results-btn:hover::before {
+            left: 100%;
+        }
+        .modern-restart-btn i, .next-level-btn i, .finish-game-btn i, .start-game-btn i, .show-results-btn i {
+            font-size: 18px;
+        }
+        .results-container {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #ffffff, #f1f3f5);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            text-align: left;
+            animation: slideIn 0.5s ease-out;
+        }
+        body.light-mode .results-container {
+            background: linear-gradient(135deg, #f0f4f8, #e9ecef);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        .results-container .results-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2a5298;
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+        body.light-mode .results-container .results-title {
+            color: #1e293b;
+        }
+        .results-container h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 15px;
+            animation: fadeIn 0.6s ease;
+        }
+        body.light-mode .results-container h3 {
+            color: #4a90e2;
+        }
+        .results-container .score-info {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            background: rgba(0, 123, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.7s ease;
+        }
+        body.light-mode .results-container .score-info {
+            background: rgba(74, 144, 226, 0.15);
+            color: #1e293b;
+        }
+        .results-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .results-container li {
+            font-size: 15px;
+            margin: 10px 0;
+            color: #dc3545;
+            padding: 8px 15px;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            animation: fadeIn 0.8s ease;
+        }
+        body.light-mode .results-container li {
+            color: #e63946;
+            background: rgba(230, 57, 70, 0.1);
+        }
+        .results-container li.correct {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+        body.light-mode .results-container li.correct {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">Simasi</a>
+        <ul>
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="hakkinda.html">Hakkında</a></li>
+            <li><a href="simasipulse.html" class="simasi-pulse-btn"><i class="bi bi-chat-dots"></i> SimasiPulse</a></li>
+            <li><a href="simachi.html" class="simachi-btn active"><i class="bi bi-puzzle"></i> Simachi</a></li>
+            <li><button class="theme-toggle-btn" onclick="toggleTheme()"><i class="bi bi-moon-stars-fill"></i> Mod</button></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="header">Simachi - Eşleştirme Oyunu</div>
+        <div class="game-area">
+            <div class="level-selection">
+                <button class="level-btn" id="kolay-btn" onclick="startGame('kolay')">Kolay</button>
+                <button class="level-btn" id="orta-btn" onclick="startGame('orta')" disabled>Orta</button>
+                <button class="level-btn" id="zor-btn" onclick="startGame('zor')" disabled>Zor</button>
+            </div>
+            <div class="timer" id="timer">Kalan Süre: 02:00</div>
+            <div class="word-container">
+                <div class="word-list" id="turkish-words"></div>
+                <div class="word-list" id="english-words"></div>
+            </div>
+            <div class="score-board">
+                Puan: <span id="score">0</span>
+            </div>
+            <div id="result-message" class="result-message"></div>
+            <div class="button-container">
+                <button class="start-game-btn" onclick="startGame('kolay')">
+                    <i class="bi bi-play-circle"></i> Oyunu Başlat
+                </button>
+                <button class="modern-restart-btn" onclick="restartGame()" style="display: none;">
+                    <i class="bi bi-arrow-clockwise"></i> Yeniden Başlat
+                </button>
+                <button class="next-level-btn" onclick="nextLevel()" style="display: none;">
+                    <i class="bi bi-arrow-right-circle"></i> Sıradaki Seviye
+                </button>
+                <button class="finish-game-btn" onclick="restartGame()" style="display: none;">
+                    <i class="bi bi-check-circle"></i> Oyunu Bitir
+                </button>
+                <button class="show-results-btn" onclick="showResults()" style="display: none;">
+                    <i class="bi bi-list-check"></i> Sonuçları Göster
+                </button>
+            </div>
+            <div id="results-container" class="results-container" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const wordPipePool = [
+            { turkish: "Elma", english: "Apple" },
+            { turkish: "Kitap", english: "Book" },
+            { turkish: "Kedi", english: "Cat" },
+            { turkish: "Köpek", english: "Dog" },
+            { turkish: "Ev", english: "House" },
+            { turkish: "Kalem", english: "Pencil" },
+            { turkish: "Su", english: "Water" },
+            { turkish: "Ekmek", english: "Bread" },
+            { turkish: "Kapı", english: "Door" },
+            { turkish: "Pencere", english: "Window" },
+            { turkish: "Masa", english: "Table" },
+            { turkish: "Sandalye", english: "Chair" },
+            { turkish: "Araba", english: "Car" },
+            { turkish: "Gün", english: "Day" },
+            { turkish: "Gece", english: "Night" },
+            { turkish: "Yol", english: "Road" },
+            { turkish: "Ayna", english: "Mirror" },
+            { turkish: "Çanta", english: "Bag" },
+            { turkish: "Telefon", english: "Phone" },
+            { turkish: "Saat", english: "Clock" },
+            { turkish: "Bardak", english: "Glass" },
+            { turkish: "Tabak", english: "Plate" },
+            { turkish: "Kaşık", english: "Spoon" },
+            { turkish: "Çatal", english: "Fork" },
+            { turkish: "Bıçak", english: "Knife" },
+            { turkish: "Ayakkabı", english: "Shoe" },
+            { turkish: "Gömlek", english: "Shirt" },
+            { turkish: "Pantolon", english: "Pants" },
+            { turkish: "Şapka", english: "Hat" },
+            { turkish: "Bahçe", english: "Garden" },
+            { turkish: "Anahtar", english: "Key" },
+            { turkish: "Lamba", english: "Lamp" },
+            { turkish: "Televizyon", english: "Television" },
+            { turkish: "Yatak", english: "Bed" },
+            { turkish: "Koltuk", english: "Sofa" },
+            { turkish: "Halı", english: "Carpet" },
+            { turkish: "Perde", english: "Curtain" },
+            { turkish: "Havlu", english: "Towel" },
+            { turkish: "Sabun", english: "Soap" },
+            { turkish: "Diş", english: "Tooth" },
+            { turkish: "El", english: "Hand" },
+            { turkish: "Ayak", english: "Foot" },
+            { turkish: "Baş", english: "Head" },
+            { turkish: "Göz", english: "Eye" },
+            { turkish: "Kulak", english: "Ear" },
+            { turkish: "Burun", english: "Nose" },
+            { turkish: "Ağız", english: "Mouth" },
+            { turkish: "Kol", english: "Arm" },
+            { turkish: "Bacak", english: "Leg" },
+            { turkish: "Parmak", english: "Finger" },
+            { turkish: "Güneş", english: "Sun" },
+            { turkish: "Ay", english: "Moon" },
+            { turkish: "Çiçek", english: "Flower" },
+            { turkish: "Ağaç", english: "Tree" },
+            { turkish: "Kuş", english: "Bird" },
+            { turkish: "Deniz", english: "Sea" },
+            { turkish: "Nehir", english: "River" },
+            { turkish: "Dağ", english: "Mountain" },
+            { turkish: "Gökyüzü", english: "Sky" },
+            { turkish: "Bulut", english: "Cloud" },
+            { turkish: "Rüzgar", english: "Wind" },
+            { turkish: "Yağmur", english: "Rain" },
+            { turkish: "Kar", english: "Snow" },
+            { turkish: "Orman", english: "Forest" },
+            { turkish: "Hava", english: "Weather" },
+            { turkish: "Toprak", english: "Soil" },
+            { turkish: "Dalga", english: "Wave" },
+            { turkish: "Yıldız", english: "Star" },
+            { turkish: "Gökkuşağı", english: "Rainbow" },
+            { turkish: "Sıcaklık", english: "Temperature" },
+            { turkish: "Duman", english: "Smoke" },
+            { turkish: "Parlak", english: "Bright" },
+            { turkish: "Sessiz", english: "Quiet" },
+            { turkish: "Gürültü", english: "Noise" },
+            { turkish: "Koku", english: "Smell" },
+            { turkish: "Manzara", english: "Landscape" },
+            { turkish: "Fırtına", english: "Storm" },
+            { turkish: "Şelale", english: "Waterfall" },
+            { turkish: "Volkan", english: "Volcano" },
+            { turkish: "Çöl", english: "Desert" },
+            { turkish: "Sis", english: "Fog" },
+            { turkish: "Bataklık", english: "Swamp" },
+            { turkish: "Mağara", english: "Cave" },
+            { turkish: "Kanyon", english: "Canyon" },
+            { turkish: "Tepe", english: "Hill" },
+            { turkish: "Vadi", english: "Valley" },
+            { turkish: "Uçurum", english: "Cliff" },
+            { turkish: "Buzul", english: "Glacier" },
+            { turkish: "Mercan", english: "Coral" },
+            { turkish: "Hazine", english: "Treasure" },
+            { turkish: "Efsane", english: "Legend" },
+            { turkish: "Keşif", english: "Discovery" },
+            { turkish: "Macera", english: "Adventure" },
+            { turkish: "Sır", english: "Secret" },
+            { turkish: "Umut", english: "Hope" },
+            { turkish: "Kaos", english: "Chaos" },
+            { turkish: "Huzur", english: "Peace" },
+            { turkish: "Zirve", english: "Peak" },
+            { turkish: "Derinlik", english: "Depth" },
+            { turkish: "Gizem", english: "Mystery" }
+        ];
+
+        let currentLevel = null;
+        let score = 0;
+        let selectedTurkish = null;
+        let selectedEnglish = null;
+        let matchedPairs = 0;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let currentPairs = [];
+        let wrongAttempts = { kolay: [], orta: [], zor: [] };
+        let levelScores = { kolay: 0, orta: 0, zor: 0 };
+        const targetScores = { kolay: 100, orta: 70, zor: 70 };
+
+        function getRandomPairs(level) {
+            const levelSizes = { kolay: 10, orta: 7, zor: 7 };
+            const startIdx = level === 'kolay' ? 0 : level === 'orta' ? 50 : 75;
+            const pool = wordPipePool.slice(startIdx, startIdx + 50);
+            const shuffled = pool.sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, levelSizes[level]);
+        }
+
+        function updateLevelButtons() {
+            const kolayBtn = document.getElementById('kolay-btn');
+            const ortaBtn = document.getElementById('orta-btn');
+            const zorBtn = document.getElementById('zor-btn');
+
+            if (currentLevel === null) {
+                kolayBtn.disabled = false;
+                ortaBtn.disabled = true;
+                zorBtn.disabled = true;
+            } else if (currentLevel === 'kolay') {
+                kolayBtn.disabled = false;
+                ortaBtn.disabled = true;
+                zorBtn.disabled = true;
+            } else if (currentLevel === 'orta') {
+                kolayBtn.disabled = true;
+                ortaBtn.disabled = false;
+                zorBtn.disabled = true;
+            } else if (currentLevel === 'zor') {
+                kolayBtn.disabled = true;
+                ortaBtn.disabled = true;
+                zorBtn.disabled = false;
+            }
+        }
+
+        function startGame(level) {
+            currentLevel = level;
+            score = 0;
+            matchedPairs = 0;
+            selectedTurkish = null;
+            selectedEnglish = null;
+            document.getElementById('score').textContent = score;
+            document.getElementById('result-message').textContent = '';
+            document.querySelector('.start-game-btn').style.display = 'inline-flex';
+            document.querySelector('.modern-restart-btn').style.display = 'none';
+            document.querySelector('.next-level-btn').style.display = 'none';
+            document.querySelector('.finish-game-btn').style.display = 'none';
+            document.querySelector('.show-results-btn').style.display = 'none';
+            document.getElementById('results-container').style.display = 'none';
+
+            updateLevelButtons();
+
+            clearInterval(timerInterval);
+            timeLeft = 120;
+            updateTimer();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                }
+            }, 1000);
+
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === level) {
+                    btn.classList.add('active');
+                }
+            });
+
+            currentPairs = getRandomPairs(level);
+            const turkishWords = currentPairs.map(pair => pair.turkish).sort(() => Math.random() - 0.5);
+            const englishWords = currentPairs.map(pair => pair.english).sort(() => Math.random() - 0.5);
+
+            const turkishContainer = document.getElementById('turkish-words');
+            const englishContainer = document.getElementById('english-words');
+            turkishContainer.innerHTML = '';
+            englishContainer.innerHTML = '';
+
+            turkishWords.forEach(word => {
+                const card = document.createElement('div');
+                card.classList.add('word-card');
+                card.textContent = word;
+                card.onclick = () => selectWord(word, 'turkish');
+                turkishContainer.appendChild(card);
+            });
+
+            englishWords.forEach(word => {
+                const card = document.createElement('div');
+                card.classList.add('word-card');
+                card.textContent = word;
+                card.onclick = () => selectWord(word, 'english');
+                englishContainer.appendChild(card);
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = `Kalan Süre: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function selectWord(word, type) {
+            if (timeLeft <= 0) return;
+
+            const resultMessage = document.getElementById('result-message');
+            if (type === 'turkish') {
+                if (selectedTurkish === word) {
+                    selectedTurkish = null;
+                    document.querySelectorAll('#turkish-words .word-card').forEach(card => {
+                        if (card.textContent === word) card.classList.remove('selected');
+                    });
+                } else {
+                    selectedTurkish = word;
+                    document.querySelectorAll('#turkish-words .word-card').forEach(card => {
+                        card.classList.remove('selected');
+                        if (card.textContent === word) card.classList.add('selected');
+                    });
+                }
+            } else {
+                if (selectedEnglish === word) {
+                    selectedEnglish = null;
+                    document.querySelectorAll('#english-words .word-card').forEach(card => {
+                        if (card.textContent === word) card.classList.remove('selected');
+                    });
+                } else {
+                    selectedEnglish = word;
+                    document.querySelectorAll('#english-words .word-card').forEach(card => {
+                        card.classList.remove('selected');
+                        if (card.textContent === word) card.classList.add('selected');
+                    });
+                }
+            }
+
+            if (selectedTurkish && selectedEnglish) {
+                const pair = currentPairs.find(p => p.turkish === selectedTurkish);
+                if (pair && pair.english === selectedEnglish) {
+                    score += 10;
+                    matchedPairs++;
+                    document.getElementById('score').textContent = score;
+                    resultMessage.textContent = 'Doğru eşleştirme!';
+                    resultMessage.classList.remove('error');
+                    resultMessage.classList.add('success');
+
+                    document.querySelectorAll('#turkish-words .word-card').forEach(card => {
+                        if (card.textContent === selectedTurkish) {
+                            card.classList.remove('selected');
+                            card.classList.add('matched');
+                            card.onclick = null;
+                        }
+                    });
+                    document.querySelectorAll('#english-words .word-card').forEach(card => {
+                        if (card.textContent === selectedEnglish) {
+                            card.classList.remove('selected');
+                            card.classList.add('matched');
+                            card.onclick = null;
+                        }
+                    });
+
+                    if (matchedPairs === currentPairs.length) {
+                        clearInterval(timerInterval);
+                        levelScores[currentLevel] = score;
+                        resultMessage.textContent = `Tebrikler! ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} seviyeyi ${score} puanla tamamladınız!`;
+                        document.querySelector('.start-game-btn').style.display = 'none';
+                        if (currentLevel === 'zor') {
+                            document.querySelector('.modern-restart-btn').style.display = 'inline-flex';
+                            document.querySelector('.finish-game-btn').style.display = 'inline-flex';
+                            document.querySelector('.show-results-btn').style.display = 'inline-flex';
+                        } else {
+                            document.querySelector('.next-level-btn').style.display = 'inline-flex';
+                        }
+                    }
+                } else {
+                    resultMessage.textContent = 'Yanlış eşleştirme, tekrar deneyin!';
+                    resultMessage.classList.remove('success');
+                    resultMessage.classList.add('error');
+                    score = Math.max(0, score - 5);
+                    document.getElementById('score').textContent = score;
+                    wrongAttempts[currentLevel].push({
+                        attempt: `${selectedTurkish} - ${selectedEnglish}`,
+                        correct: pair.english
+                    });
+                }
+                selectedTurkish = null;
+                selectedEnglish = null;
+                document.querySelectorAll('.word-card').forEach(card => {
+                    if (!card.classList.contains('matched')) {
+                        card.classList.remove('selected');
+                    }
+                });
+            }
+        }
+
+        function endGame() {
+            levelScores[currentLevel] = score;
+            document.getElementById('result-message').textContent = `Süre bitti! ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} seviye puanı: ${score}`;
+            document.getElementById('result-message').classList.remove('success');
+            document.getElementById('result-message').classList.add('error');
+            document.querySelector('.start-game-btn').style.display = 'none';
+            if (currentLevel === 'zor') {
+                document.querySelector('.modern-restart-btn').style.display = 'inline-flex';
+                document.querySelector('.finish-game-btn').style.display = 'inline-flex';
+                document.querySelector('.show-results-btn').style.display = 'inline-flex';
+            } else {
+                document.querySelector('.next-level-btn').style.display = 'inline-flex';
+            }
+        }
+
+        function restartGame() {
+            currentLevel = null;
+            score = 0;
+            timeLeft = 120;
+            wrongAttempts = { kolay: [], orta: [], zor: [] };
+            levelScores = { kolay: 0, orta: 0, zor: 0 };
+            document.getElementById('turkish-words').innerHTML = '';
+            document.getElementById('english-words').innerHTML = '';
+            document.getElementById('score').textContent = '0';
+            document.getElementById('result-message').textContent = '';
+            document.getElementById('timer').textContent = 'Kalan Süre: 02:00';
+            document.querySelector('.start-game-btn').style.display = 'inline-flex';
+            document.querySelector('.modern-restart-btn').style.display = 'none';
+            document.querySelector('.next-level-btn').style.display = 'none';
+            document.querySelector('.finish-game-btn').style.display = 'none';
+            document.querySelector('.show-results-btn').style.display = 'none';
+            document.getElementById('results-container').style.display = 'none';
+            updateLevelButtons();
+        }
+
+        function nextLevel() {
+            if (currentLevel === 'kolay') {
+                startGame('orta');
+            } else if (currentLevel === 'orta') {
+                startGame('zor');
+            }
+        }
+
+        function showResults() {
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.style.display = 'block';
+            resultsContainer.innerHTML = '<div class="results-title">Sonuçlar</div>';
+
+            const levels = ['kolay', 'orta', 'zor'];
+            levels.forEach(level => {
+                const h3 = document.createElement('h3');
+                h3.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Seviye:`;
+                resultsContainer.appendChild(h3);
+
+                const scoreInfo = document.createElement('div');
+                scoreInfo.classList.add('score-info');
+                scoreInfo.textContent = `Hedef Puan: ${targetScores[level]} | Elde Edilen Puan: ${levelScores[level]}`;
+                resultsContainer.appendChild(scoreInfo);
+
+                const ul = document.createElement('ul');
+                if (wrongAttempts[level].length === 0) {
+                    const li = document.createElement('li');
+                    li.textContent = 'Hiç yanlış eşleştirme yok!';
+                    li.classList.add('correct');
+                    ul.appendChild(li);
+                } else {
+                    wrongAttempts[level].forEach(attempt => {
+                        const li = document.createElement('li');
+                        li.textContent = `${attempt.attempt} (Doğru: ${attempt.correct})`;
+                        ul.appendChild(li);
+                    });
+                }
+                resultsContainer.appendChild(ul);
+            });
+        }
+
+        updateLevelButtons();
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.querySelector('.theme-toggle-btn');
+            body.classList.toggle('light-mode');
+            const isLightMode = body.classList.contains('light-mode');
+            themeBtn.innerHTML = `<i class="bi ${isLightMode ? 'bi-sun-fill' : 'bi-moon-stars-fill'}"></i> Mod`;
+            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.querySelector('.theme-toggle-btn').innerHTML = `<i class="bi bi-sun-fill"></i> Mod`;
+            }
+        });
+    </script>
+</body>
+</html>
