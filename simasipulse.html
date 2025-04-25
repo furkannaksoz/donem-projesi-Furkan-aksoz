@@ -180,11 +180,13 @@
         }
         .content-wrapper {
             display: flex;
-            margin: 2rem 0;
-            gap: 5px;
+            margin: 2rem auto;
+            gap: 0;
             justify-content: center;
+            align-items: flex-start;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
+            flex-wrap: nowrap;
         }
         .chat-container {
             max-width: 700px;
@@ -261,6 +263,7 @@
             border-top: 1px solid #334155;
             gap: 0.5rem;
             flex-wrap: wrap;
+            position: relative;
         }
         body.light-mode .input-area {
             background: #ffffff;
@@ -312,6 +315,55 @@
             background: #2563eb;
             box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
         }
+        .voice-btn {
+            padding: 0.8rem;
+            background: #475569;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body.light-mode .voice-btn {
+            background: #e9ecef;
+        }
+        .voice-btn:hover {
+            background: #2563eb;
+        }
+        body.light-mode .voice-btn:hover {
+            background: #4a90e2;
+        }
+        #suggestions {
+            position: absolute;
+            top: 100%;
+            left: 1rem;
+            right: 1rem;
+            background: #1e293b;
+            border-radius: 10px;
+            border: 1px solid #2563eb;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        body.light-mode #suggestions {
+            background: #ffffff;
+            border: 1px solid #4a90e2;
+        }
+        .suggestion-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .suggestion-item:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+        body.light-mode .suggestion-item:hover {
+            background: #4a90e2;
+            color: #1e293b;
+        }
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -342,6 +394,8 @@
             padding: 1rem;
             color: #e2e8f0;
             border: 1px solid #2563eb;
+            margin-left: 0;
+            align-self: flex-start;
         }
         body.light-mode .side-panel {
             background: #ffffff;
@@ -449,6 +503,225 @@
         body.light-mode .voice-options input[type="checkbox"]:checked::after {
             color: #1e293b;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: #1e293b;
+            border-radius: 15px;
+            padding: 2rem;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            color: #e2e8f0;
+            border: 1px solid #2563eb;
+            position: relative;
+        }
+        body.light-mode .modal-content {
+            background: #ffffff;
+            color: #1e293b;
+            border: 1px solid #4a90e2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 10px;
+            background: #334155;
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        body.light-mode .modal-content input {
+            background: #e9ecef;
+            color: #1e293b;
+        }
+        .modal-content input:focus {
+            background: #475569;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+        body.light-mode .modal-content input:focus {
+            background: #d1d8e0;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+        .modal-content button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        body.light-mode .modal-content button {
+            background: #4a90e2;
+            color: #1e293b;
+        }
+        .modal-content button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 64, 175, 0.4);
+        }
+        body.light-mode .modal-content button:hover {
+            background: #2563eb;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #475569;
+            color: #e2e8f0;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        body.light-mode .close-btn {
+            background: #e9ecef;
+            color: #1e293b;
+        }
+        .close-btn:hover {
+            background: #2563eb;
+            transform: scale(1.1);
+            color: #ffffff;
+        }
+        body.light-mode .close-btn:hover {
+            background: #4a90e2;
+            color: #1e293b;
+        }
+        .word-table-modal, .favorites-modal, .profile-modal {
+            width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .word-table, .favorites-table, .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .word-table th, .word-table td, .favorites-table th, .favorites-table td, .profile-table th, .profile-table td {
+            padding: 0.8rem;
+            border: 1px solid #2563eb;
+            text-align: left;
+        }
+        body.light-mode .word-table th,
+        body.light-mode .word-table td,
+        body.light-mode .favorites-table th,
+        body.light-mode .favorites-table td,
+        body.light-mode .profile-table th,
+        body.light-mode .profile-table td {
+            border: 1px solid #4a90e2;
+        }
+        .word-table th, .favorites-table th, .profile-table th {
+            background: #2563eb;
+            color: #ffffff;
+        }
+        body.light-mode .word-table th,
+        body.light-mode .favorites-table th,
+        body.light-mode .profile-table th {
+            background: #4a90e2;
+            color: #1e293b;
+        }
+        .word-table td button, .favorites-table td button, .profile-table td button {
+            padding: 0.4rem 0.8rem;
+            margin: 0.2rem;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        .edit-btn {
+            background: #4a90e2;
+            color: #ffffff;
+        }
+        body.light-mode .edit-btn {
+            background: #60a5fa;
+            color: #1e293b;
+        }
+        .edit-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+        body.light-mode .edit-btn:hover {
+            background: #2563eb;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+        .delete-btn {
+            background: #dc2626;
+            color: #ffffff;
+        }
+        body.light-mode .delete-btn {
+            background: #ef4444;
+            color: #1e293b;
+        }
+        .delete-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        }
+        body.light-mode .delete-btn:hover {
+            background: #dc2626;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        .speak-btn {
+            background: #10b981;
+            color: #ffffff;
+        }
+        body.light-mode .speak-btn {
+            background: #34d399;
+            color: #1e293b;
+        }
+        .speak-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        body.light-mode .speak-btn:hover {
+            background: #10b981;
+            box-shadow: 0 5px 15px rgba(52, 211, 153, 0.4);
+        }
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+        body.light-mode .no-data {
+            color: #1e293b;
+        }
     </style>
 </head>
 <body>
@@ -468,7 +741,9 @@
             <div class="header">SimasiPulse - Sözlük</div>
             <div id="chatbox"></div>
             <div class="input-area">
-                <input type="text" id="userInput" placeholder="Kelime veya cümle yaz (ör: elma)" onkeydown="if(event.key === 'Enter') sendMessage();">
+                <input type="text" id="userInput" placeholder="Kelime veya cümle yaz (ör: elma)" onkeydown="if(event.key === 'Enter') sendMessage();" oninput="simasiPulse.suggestWords()">
+                <div id="suggestions"></div>
+                <button id="voiceBtn" class="voice-btn" onclick="simasiPulse.startVoiceInput()"><i class="bi bi-mic-fill"></i></button>
                 <div>
                     <button id="speakBtn" onclick="toggleVoiceOptions('speak')">Yazıyı Seslendir</button>
                     <div id="speakOptions" class="voice-options">
@@ -477,11 +752,7 @@
                     </div>
                 </div>
                 <div>
-                    <button id="speakResponseBtn" onclick="toggleVoiceOptions('speakResponse')">Sesli Yanıtla</button>
-                    <div id="speakResponseOptions" class="voice-options">
-                        <label><input type="checkbox" id="responseTr" onchange="setResponseLang('tr-TR')"> Türkçe Olarak Oku</label>
-                        <label><input type="checkbox" id="responseEn" onchange="setResponseLang('en-GB')"> İngilizce Olarak Oku</label>
-                    </div>
+                    <button id="addFavoriteBtn" onclick="simasiPulse.addToFavoritesFromInput()">Favorilere Ekle</button>
                 </div>
                 <div>
                     <button id="sendBtn" onclick="toggleVoiceOptions('send')">Mesaj Gönder</button>
@@ -499,17 +770,110 @@
             <div id="formatText" class="format-text">
                 <strong>SimasiPulse’a Nasıl Öğretirim?</strong><br><br>
                 <b>1. Kelime Öğretme:</b><br>
-                - Türkçe’den İngilizce’ye: <code>elma = apple</code> veya <code>kelime öğret elma = apple</code><br>
-                - İngilizce’den Türkçe’ye: <code>apple = elma</code> veya <code>kelime öğret (ing-tr) apple = elma</code><br>
-                - Not: Tek kelime olmalı, boşluk olmamalı!<br><br>
+                - Türkçe’den İngilizce’ye: <code>elma = apple</code> veya <code>kelime öğret elma = apple | örnek: I ate an apple</code><br>
+                - İngilizce’den Türkçe’ye: <code>apple = elma</code> veya <code>kelime öğret (ing-tr) apple = elma | örnek: Bir elma yedim</code><br>
+                - Not: Tek kelime olmalı, boşluk olmamalı! Örnek cümle isteğe bağlı.<br><br>
                 <b>2. Cümle Öğretme:</b><br>
-                - Türkçe’den İngilizce’ye: <code>Elma kırmızıdır = The apple is red</code><br>
-                - İngilizce’den Türkçe’ye: <code>The apple is red = Elma kırmızıdır</code><br>
-                - Not: Cümlede boşluk olmalı, birden fazla kelime içermeli!<br><br>
+                - Türkçe’den İngilizce’ye: <code>Elma kırmızıdır = The apple is red | örnek: I see a red apple</code><br>
+                - İngilizce’den Türkçe’ye: <code>The apple is red = Elma kırmızıdır | örnek: Kırmızı bir elma görüyorum</code><br>
+                - Not: Cümlede boşluk olmalı, birden fazla kelime içermeli! Örnek cümle isteğe bağlı.<br><br>
+                <b>3. Favorilere Ekleme:</b><br>
+                - <code>elma’yı favorilere ekle</code> yazarak veya "Favorilere Ekle" butonuna tıklayarak kelimeyi/cümleyi favorilere kaydedebilirsin. Favorilerini yan paneldeki "Favoriler" butonuna tıklayarak görebilirsin.<br><br>
                 <b>Örnek Kullanım:</b><br>
-                - "kitap = book" → "Harika, kelime olarak 'kitap', 'book' demek öğrendim!"<br>
+                - "kitap = book | örnek: I read a book" → "Harika, kelime olarak 'kitap', 'book' demek öğrendim!"<br>
                 - "Kedi uyuyor = The cat is sleeping" → "Çok güzel, cümle olarak 'Kedi uyuyor', 'The cat is sleeping' demek öğrendim!"<br><br>
-                <b>İpucu:</b> Öğrendiğim şeyleri sorabilirsin: "elma nedir?" veya "kitap ne demek?"
+                <b>İpucu:</b> Öğrendiğim şeyleri sorabilirsin: "elma nedir?" veya "kitap ne demek?"<br>
+                <b>Not:</b> Öğretme ve kelime yönetimi için admin girişi gereklidir.
+            </div>
+            <button class="toggle-btn" onclick="simasiPulse.openProfileModal()">Profil</button>
+            <button class="toggle-btn" onclick="simasiPulse.openFavoritesModal()">Favoriler</button>
+            <button class="toggle-btn" onclick="simasiPulse.startQuiz()">Test Modu</button>
+            <button class="toggle-btn" id="adminBtn" onclick="toggleAdminModal()">Admin Girişi</button>
+            <button class="toggle-btn" onclick="simasiPulse.openWordManagementModal()">Kelime Yönetimi</button>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('adminModal').style.display='none'">×</span>
+            <h3 id="modalTitle">Admin Girişi</h3>
+            <div id="loginForm">
+                <input type="text" id="adminUsername" placeholder="Kullanıcı Adı">
+                <input type="password" id="adminPassword" placeholder="Şifre">
+                <button onclick="simasiPulse.loginAdmin()">Giriş Yap</button>
+            </div>
+            <div id="logoutForm" style="display: none;">
+                <button onclick="simasiPulse.logoutAdmin()">Çıkış Yap</button>
+                <button onclick="showUpdateForm()">Kullanıcı Adı ve Şifre Güncelle</button>
+            </div>
+            <div id="updateForm" style="display: none;">
+                <input type="text" id="newUsername" placeholder="Yeni Kullanıcı Adı">
+                <input type="password" id="newPassword" placeholder="Yeni Şifre">
+                <button onclick="simasiPulse.updateAdminCredentials()">Güncelle</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="wordManagementModal">
+        <div class="modal-content word-table-modal">
+            <span class="close-btn" onclick="document.getElementById('wordManagementModal').style.display='none'">×</span>
+            <h3>Kelime Yönetimi</h3>
+            <table class="word-table">
+                <thead>
+                    <tr>
+                        <th>Kelime/Cümle</th>
+                        <th>Çeviri</th>
+                        <th>Örnek</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody id="wordManagementList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" id="editWordModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('editWordModal').style.display='none'">×</span>
+            <h3>Kelimeyi Düzenle</h3>
+            <input type="text" id="editWordKey" placeholder="Kelime/Cümle">
+            <input type="text" id="editWordValue" placeholder="Çeviri">
+            <input type="text" id="editWordExample" placeholder="Örnek Cümle (isteğe bağlı)">
+            <button onclick="simasiPulse.saveEditedWord()">Kaydet</button>
+        </div>
+    </div>
+
+    <div class="modal" id="favoritesModal">
+        <div class="modal-content favorites-modal">
+            <span class="close-btn" onclick="document.getElementById('favoritesModal').style.display='none'">×</span>
+            <h3>Favoriler</h3>
+            <table class="favorites-table" id="favoritesTable">
+                <thead>
+                    <tr>
+                        <th>Kelime/Cümle</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody id="favoritesList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-modal">
+            <span class="close-btn" onclick="document.getElementById('profileModal').style.display='none'">×</span>
+            <h3>Profil</h3>
+            <div id="profileContent">
+                <p><strong>Öğrenilen Kelime/Cümle:</strong> <span id="learnedWords">0</span></p>
+                <table class="profile-table">
+                    <thead>
+                        <tr>
+                            <th>Quiz Skorları</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quizScoresList"></tbody>
+                </table>
+                <button onclick="simasiPulse.resetQuizScores()">Skorları Sıfırla</button>
             </div>
         </div>
     </div>
@@ -520,7 +884,13 @@
                 this.userKnowledge = this.loadUserKnowledge();
                 this.turkishToEnglish = {};
                 this.englishToTurkish = {};
+                this.isAdmin = localStorage.getItem('adminLoggedIn') === 'true';
+                this.adminCredentials = this.loadAdminCredentials();
+                this.userProfile = this.loadUserProfile();
+                this.quizMode = false;
+                this.quizState = { score: 0, correct: 0, wrong: 0, currentQuestion: null, questionCount: 0, totalQuestions: 5 };
                 this.loadDictionary();
+                this.updateAdminButton();
             }
 
             async loadDictionary() {
@@ -545,10 +915,283 @@
 
             saveUserKnowledge() {
                 localStorage.setItem('simasiPulseKnowledge', JSON.stringify(this.userKnowledge));
+                this.trackProgress();
+            }
+
+            loadAdminCredentials() {
+                const saved = localStorage.getItem('adminCredentials');
+                return saved ? JSON.parse(saved) : { username: "admin", password: "admin123" };
+            }
+
+            saveAdminCredentials() {
+                localStorage.setItem('adminCredentials', JSON.stringify(this.adminCredentials));
+            }
+
+            loadUserProfile() {
+                const saved = localStorage.getItem('simasiPulseProfile');
+                return saved ? JSON.parse(saved) : { learnedWords: 0, quizScores: [], favorites: [] };
+            }
+
+            saveUserProfile() {
+                localStorage.setItem('simasiPulseProfile', JSON.stringify(this.userProfile));
+            }
+
+            updateAdminButton() {
+                document.getElementById("adminBtn").textContent = this.isAdmin ? "Admin Çıkışı" : "Admin Girişi";
+            }
+
+            loginAdmin() {
+                const username = document.getElementById("adminUsername").value.trim();
+                const password = document.getElementById("adminPassword").value;
+                const chatbox = document.getElementById("chatbox");
+                if (username === this.adminCredentials.username && password === this.adminCredentials.password) {
+                    this.isAdmin = true;
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    document.getElementById("adminModal").style.display = "none";
+                    document.getElementById("adminUsername").value = "";
+                    document.getElementById("adminPassword").value = "";
+                    document.getElementById("adminBtn").textContent = "Admin Çıkışı";
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Admin girişi başarılı! Artık kelime ve cümle öğretebilirsin.</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                } else {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Yanlış kullanıcı adı veya şifre! Lütfen tekrar dene.</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }
+            }
+
+            logoutAdmin() {
+                this.isAdmin = false;
+                localStorage.setItem('adminLoggedIn', 'false');
+                document.getElementById("adminModal").style.display = "none";
+                document.getElementById("adminBtn").textContent = "Admin Girişi";
+                const chatbox = document.getElementById("chatbox");
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Admin modundan çıktın!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            updateAdminCredentials() {
+                if (!this.isAdmin) {
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Kullanıcı adı ve şifre güncellemek için önce admin girişi yapmalısın!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                const newUsername = document.getElementById("newUsername").value.trim();
+                const newPassword = document.getElementById("newPassword").value;
+                const chatbox = document.getElementById("chatbox");
+                if (newUsername && newPassword) {
+                    this.adminCredentials = { username: newUsername, password: newPassword };
+                    this.saveAdminCredentials();
+                    document.getElementById("adminModal").style.display = "none";
+                    document.getElementById("newUsername").value = "";
+                    document.getElementById("newPassword").value = "";
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Kullanıcı adı ve şifre başarıyla güncellendi!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                } else {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Lütfen yeni kullanıcı adı ve şifreyi doldur!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }
+            }
+
+            openWordManagementModal() {
+                if (!this.isAdmin) {
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Kelime yönetimi için admin girişi yapmalısın!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                document.getElementById("wordManagementModal").style.display = "flex";
+                this.populateTable();
+            }
+
+            populateTable() {
+                const wordList = document.getElementById("wordManagementList");
+                wordList.innerHTML = "";
+                const words = Object.entries(this.userKnowledge);
+                if (words.length === 0) {
+                    wordList.innerHTML = `<tr><td colspan="4" class="no-data">Henüz kelime eklenmemiş!</td></tr>`;
+                    return;
+                }
+                words.forEach(([key, data]) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${key}</td>
+                        <td>${data.translation}</td>
+                        <td>${data.example || '-'}</td>
+                        <td>
+                            <button class="edit-btn" onclick="simasiPulse.editWord('${key}')">Düzenle</button>
+                            <button class="delete-btn" onclick="simasiPulse.deleteWord('${key}')">Sil</button>
+                            <button class="speak-btn" onclick="simasiPulse.speakEnglish('${data.translation}')">İngilizce Seslendir</button>
+                        </td>
+                    `;
+                    wordList.appendChild(row);
+                });
+            }
+
+            editWord(key) {
+                const data = this.userKnowledge[key];
+                document.getElementById("editWordKey").value = key;
+                document.getElementById("editWordValue").value = data.translation;
+                document.getElementById("editWordExample").value = data.example || "";
+                document.getElementById("editWordModal").style.display = "flex";
+            }
+
+            saveEditedWord() {
+                const key = document.getElementById("editWordKey").value.trim();
+                const value = document.getElementById("editWordValue").value.trim();
+                const example = document.getElementById("editWordExample").value.trim();
+                const chatbox = document.getElementById("chatbox");
+                if (key && value) {
+                    const oldKey = Object.keys(this.userKnowledge).find(k => k.toLowerCase() === document.getElementById("editWordKey").value.trim().toLowerCase());
+                    if (oldKey && oldKey !== key) {
+                        delete this.userKnowledge[oldKey];
+                    }
+                    this.userKnowledge[key] = { translation: value, example: example || null };
+                    this.saveUserKnowledge();
+                    this.populateTable();
+                    document.getElementById("editWordModal").style.display = "none";
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> "${key}" başarıyla güncellendi!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                } else {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Lütfen kelime ve çeviriyi doldur!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }
+            }
+
+            deleteWord(key) {
+                const targetKey = Object.keys(this.userKnowledge).find(k => k.toLowerCase() === key.toLowerCase());
+                if (targetKey) {
+                    delete this.userKnowledge[targetKey];
+                    this.saveUserKnowledge();
+                    this.populateTable();
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> "${targetKey}" başarıyla silindi!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }
+            }
+
+            addToFavoritesFromInput() {
+                const input = document.getElementById("userInput").value.trim();
+                const lowerInput = input.toLowerCase();
+                const chatbox = document.getElementById("chatbox");
+                if (!input) {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Lütfen favorilere eklemek için bir kelime veya cümle gir!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                const favoriteExists = this.userProfile.favorites.some(fav => fav.toLowerCase() === lowerInput);
+                if (!favoriteExists) {
+                    this.userProfile.favorites.push(input);
+                    this.saveUserProfile();
+                    this.populateFavoritesTable();
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> "${input}" favorilere eklendi!</p>`;
+                } else {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> "${input}" zaten favorilerde!</p>`;
+                }
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            openFavoritesModal() {
+                document.getElementById("favoritesModal").style.display = "flex";
+                this.populateFavoritesTable();
+            }
+
+            populateFavoritesTable() {
+                const favoritesList = document.getElementById("favoritesList");
+                favoritesList.innerHTML = "";
+                const favorites = this.userProfile.favorites;
+                if (favorites.length === 0) {
+                    favoritesList.innerHTML = `<tr><td colspan="2" class="no-data">Henüz favori eklenmemiş!</td></tr>`;
+                    return;
+                }
+                favorites.forEach(favorite => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${favorite}</td>
+                        <td>
+                            <button class="delete-btn" onclick="simasiPulse.removeFromFavorites('${favorite}')">Sil</button>
+                        </td>
+                    `;
+                    favoritesList.appendChild(row);
+                });
+            }
+
+            removeFromFavorites(favorite) {
+                const lowerFavorite = favorite.toLowerCase();
+                this.userProfile.favorites = this.userProfile.favorites.filter(fav => fav.toLowerCase() !== lowerFavorite);
+                this.saveUserProfile();
+                this.populateFavoritesTable();
+                const chatbox = document.getElementById("chatbox");
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> "${favorite}" favorilerden kaldırıldı!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            openProfileModal() {
+                document.getElementById("profileModal").style.display = "flex";
+                this.populateProfileModal();
+            }
+
+            populateProfileModal() {
+                document.getElementById("learnedWords").textContent = this.userProfile.learnedWords;
+                const quizScoresList = document.getElementById("quizScoresList");
+                quizScoresList.innerHTML = "";
+                const scores = this.userProfile.quizScores;
+                if (scores.length === 0) {
+                    quizScoresList.innerHTML = `<tr><td class="no-data">Henüz quiz yapılmadı!</td></tr>`;
+                    return;
+                }
+                scores.forEach(score => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td>${score}</td>`;
+                    quizScoresList.appendChild(row);
+                });
+            }
+
+            resetQuizScores() {
+                this.userProfile.quizScores = [];
+                this.saveUserProfile();
+                this.populateProfileModal();
+                const chatbox = document.getElementById("chatbox");
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Quiz skorları sıfırlandı!</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            speakEnglish(text) {
+                if (!window.speechSynthesis) {
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Maalesef tarayıcın sesli okumayı desteklemiyor!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                let voices = window.speechSynthesis.getVoices();
+                if (!voices.length) {
+                    window.speechSynthesis.onvoiceschanged = function() {
+                        voices = window.speechSynthesis.getVoices();
+                        const voice = voices.find(v => v.lang === 'en-GB') || voices[0];
+                        utterance.voice = voice;
+                        utterance.lang = 'en-GB';
+                        window.speechSynthesis.speak(utterance);
+                    };
+                } else {
+                    const voice = voices.find(v => v.lang === 'en-GB') || voices[0];
+                    utterance.voice = voice;
+                    utterance.lang = 'en-GB';
+                    window.speechSynthesis.speak(utterance);
+                }
+                utterance.onerror = function(event) {
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                };
             }
 
             learnWord(input) {
-                let parts, direction, key, value;
+                if (!this.isAdmin) {
+                    return "Üzgünüm, kelime öğretme özelliği yalnızca yöneticiler için aktif! Lütfen admin girişi yap.";
+                }
+                let parts, direction, key, value, example = null;
 
                 if (input.includes("kelime öğret (tr-ing)")) {
                     parts = input.split("kelime öğret (tr-ing)")[1]?.trim();
@@ -561,95 +1204,229 @@
                     direction = "tr-ing";
                 } else {
                     parts = input;
-                    direction = this.turkishToEnglish[parts.split("=")[0].trim()] ? "ing-tr" : "tr-ing";
+                    direction = Object.keys(this.turkishToEnglish).find(k => k.toLowerCase() === parts.split("=")[0].trim().toLowerCase()) ? "ing-tr" : "tr-ing";
                 }
 
                 if (!parts || !parts.includes("=")) {
                     return "Kusura bakma, kelime öğretmek için 'elma = apple' veya 'apple = elma' şeklinde yazabilir misin?";
                 }
 
-                [key, value] = parts.split("=").map(part => part.trim());
+                const [keyValue, examplePart] = parts.split("|").map(part => part.trim());
+                [key, value] = keyValue.split("=").map(part => part.trim());
+                if (examplePart && examplePart.startsWith("örnek:")) {
+                    example = examplePart.split("örnek:")[1].trim();
+                }
 
                 if (key.includes(" ")) {
                     return "Pardon, sadece tek kelime öğretebilirim! Cümle için doğrudan yazmayı deneyebilirsin.";
                 }
 
                 if (key && value) {
+                    const existingKey = Object.keys(this.userKnowledge).find(k => k.toLowerCase() === key.toLowerCase());
+                    if (existingKey && existingKey !== key) {
+                        delete this.userKnowledge[existingKey];
+                    }
                     if (direction === "tr-ing") {
                         this.turkishToEnglish[key] = value;
-                        this.userKnowledge[key] = value;
+                        this.userKnowledge[key] = { translation: value, example };
                     } else if (direction === "ing-tr") {
                         this.englishToTurkish[key] = value;
-                        this.userKnowledge[key] = value;
+                        this.userKnowledge[key] = { translation: value, example };
                     }
                     this.saveUserKnowledge();
-                    return `Harika, kelime olarak "${key}", "${value}" demek (${direction}) öğrendim!`;
+                    return `Harika, kelime olarak "${key}", "${value}" demek (${direction}) öğrendim!${example ? ` Örnek: ${example}` : ""}`;
                 }
                 return "Üzgünüm, bir hata oldu. Lütfen doğru formatta yazmayı deneyebilir misin?";
             }
 
             learnSentence(input) {
+                if (!this.isAdmin) {
+                    return "Üzgünüm, cümle öğretme özelliği yalnızca yöneticiler için aktif! Lütfen admin girişi yap.";
+                }
                 const parts = input.split("öğret")[1]?.trim() || input;
                 if (!parts || !parts.includes("=")) {
                     return "Kusura bakma, cümle öğretmek için 'Elma kırmızıdır = The apple is red' şeklinde yazabilir misin?";
                 }
-                const [key, value] = parts.split("=").map(part => part.trim());
+                const [keyValue, examplePart] = parts.split("|").map(part => part.trim());
+                const [key, value] = keyValue.split("=").map(part => part.trim());
+                let example = null;
+                if (examplePart && examplePart.startsWith("örnek:")) {
+                    example = examplePart.split("örnek:")[1].trim();
+                }
                 if (!key.includes(" ")) {
                     return "Pardon, sadece cümle öğretebilirim! Tek kelime için doğrudan yazmayı deneyebilirsin.";
                 }
                 if (key && value) {
-                    this.userKnowledge[key] = value;
+                    const existingKey = Object.keys(this.userKnowledge).find(k => k.toLowerCase() === key.toLowerCase());
+                    if (existingKey && existingKey !== key) {
+                        delete this.userKnowledge[existingKey];
+                    }
+                    this.userKnowledge[key] = { translation: value, example };
                     this.saveUserKnowledge();
-                    return `Çok güzel, cümle olarak "${key}", "${value}" demek öğrendim!`;
+                    return `Çok güzel, cümle olarak "${key}", "${value}" demek öğrendim!${example ? ` Örnek: ${example}` : ""}`;
                 }
                 return "Üzgünüm, bir hata oldu. Lütfen doğru formatta yazmayı deneyebilir misin?";
             }
 
             translateOrQuery(input) {
                 const cleanInput = input.trim();
-                if (this.userKnowledge[cleanInput]) {
-                    return `"${cleanInput}", "${this.userKnowledge[cleanInput]}" demek.`;
+                const lowerInput = cleanInput.toLowerCase();
+                let response = "";
+                const userKnowledgeKey = Object.keys(this.userKnowledge).find(k => k.toLowerCase() === lowerInput);
+                if (userKnowledgeKey) {
+                    response = `"${userKnowledgeKey}", "${this.userKnowledge[userKnowledgeKey].translation}" demek.`;
+                    if (this.userKnowledge[userKnowledgeKey].example) {
+                        response += ` Örnek: ${this.userKnowledge[userKnowledgeKey].example}`;
+                    }
+                } else {
+                    const turkishKey = Object.keys(this.turkishToEnglish).find(k => k.toLowerCase() === lowerInput);
+                    const englishKey = Object.keys(this.englishToTurkish).find(k => k.toLowerCase() === lowerInput);
+                    if (turkishKey) {
+                        response = `"${turkishKey}", "${this.turkishToEnglish[turkishKey]}" demek.`;
+                    } else if (englishKey) {
+                        response = `"${englishKey}", "${this.englishToTurkish[englishKey]}" demek.`;
+                    } else {
+                        response = `Maalesef "${cleanInput}" hakkında bilgim yok. Dilersen bana öğretebilirsin!`;
+                    }
                 }
-                if (this.turkishToEnglish[cleanInput]) {
-                    return `"${cleanInput}", "${this.turkishToEnglish[cleanInput]}" demek.`;
+                return response;
+            }
+
+            suggestWords() {
+                const input = document.getElementById("userInput").value.trim();
+                const lowerInput = input.toLowerCase();
+                const suggestionsDiv = document.getElementById("suggestions");
+                suggestionsDiv.innerHTML = "";
+                if (!input) {
+                    suggestionsDiv.style.display = "none";
+                    return;
                 }
-                if (this.englishToTurkish[cleanInput]) {
-                    return `"${cleanInput}", "${this.englishToTurkish[cleanInput]}" demek.`;
+                const allWords = [
+                    ...Object.keys(this.turkishToEnglish),
+                    ...Object.keys(this.englishToTurkish),
+                    ...Object.keys(this.userKnowledge)
+                ].filter(word => word.toLowerCase().startsWith(lowerInput)).slice(0, 5);
+                if (allWords.length > 0) {
+                    allWords.forEach(word => {
+                        const div = document.createElement("div");
+                        div.className = "suggestion-item";
+                        div.textContent = word;
+                        div.onclick = () => {
+                            document.getElementById("userInput").value = word;
+                            suggestionsDiv.style.display = "none";
+                        };
+                        suggestionsDiv.appendChild(div);
+                    });
+                    suggestionsDiv.style.display = "block";
+                } else {
+                    suggestionsDiv.style.display = "none";
                 }
-                return `Maalesef "${cleanInput}" hakkında bilgim yok. Dilersen bana öğretebilirsin!`;
+            }
+
+            startVoiceInput() {
+                const chatbox = document.getElementById("chatbox");
+                if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, tarayıcın sesli komutları desteklemiyor!</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = "tr-TR";
+                recognition.start();
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById("userInput").value = transcript;
+                    sendMessage();
+                };
+                recognition.onerror = (event) => {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Sesli komut sırasında bir hata oluştu: ${event.error}</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                };
+            }
+
+            startQuiz() {
+                const chatbox = document.getElementById("chatbox");
+                const wordCount = Object.keys(this.userKnowledge).length;
+                if (wordCount < this.quizState.totalQuestions) {
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Quiz için en az ${this.quizState.totalQuestions} kelime öğretmelisin! Şu an ${wordCount} kelime var.</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    return;
+                }
+                this.quizMode = true;
+                this.quizState = { score: 0, correct: 0, wrong: 0, currentQuestion: null, questionCount: 0, totalQuestions: 5, usedQuestions: [] };
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Quiz başlıyor! ${this.quizState.totalQuestions} soru soracağım. İlk soruya hazır mısın?</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                this.askQuizQuestion();
+            }
+
+            askQuizQuestion() {
+                const chatbox = document.getElementById("chatbox");
+                const words = Object.keys(this.userKnowledge).filter(word => !this.quizState.usedQuestions.includes(word));
+                if (this.quizState.questionCount >= this.quizState.totalQuestions || words.length === 0) {
+                    this.endQuiz();
+                    return;
+                }
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                this.quizState.currentQuestion = randomWord;
+                this.quizState.usedQuestions.push(randomWord);
+                this.quizState.questionCount++;
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Soru ${this.quizState.questionCount}: "${randomWord}" ne demek?</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            checkQuizAnswer(input) {
+                const chatbox = document.getElementById("chatbox");
+                const correctAnswer = this.userKnowledge[this.quizState.currentQuestion].translation;
+                const cleanInput = input.trim().toLowerCase();
+                if (cleanInput === correctAnswer.toLowerCase()) {
+                    this.quizState.correct++;
+                    this.quizState.score += 20;
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Doğru! "${this.quizState.currentQuestion}" = "${correctAnswer}". Skorun: ${this.quizState.score}</p>`;
+                } else {
+                    this.quizState.wrong++;
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Yanlış! "${this.quizState.currentQuestion}" = "${correctAnswer}". Skorun: ${this.quizState.score}</p>`;
+                }
+                chatbox.scrollTop = chatbox.scrollHeight;
+                this.askQuizQuestion();
+            }
+
+            endQuiz() {
+                const chatbox = document.getElementById("chatbox");
+                this.quizMode = false;
+                this.userProfile.quizScores.push(this.quizState.score);
+                this.saveUserProfile();
+                this.populateProfileModal();
+                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Quiz bitti! Skorun: ${this.quizState.score}. Doğru: ${this.quizState.correct}, Yanlış: ${this.quizState.wrong}. Tekrar denemek ister misin?</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            trackProgress() {
+                this.userProfile.learnedWords = Object.keys(this.userKnowledge).length;
+                this.saveUserProfile();
+                this.populateProfileModal();
+            }
+
+            updateProfileText() {
+                // Bu fonksiyon artık kullanılmıyor, populateProfileModal kullanıyor
             }
         }
 
         const simasiPulse = new SimasiPulse();
-        let speakLang = "tr-TR"; // Varsayılan Türkçe
-        let responseLang = "tr-TR";
-        let sendLang = null;
 
-        function sendMessage() {
-            const userInput = document.getElementById("userInput").value.trim();
-            const chatbox = document.getElementById("chatbox");
-            if (!userInput) return;
-
-            chatbox.innerHTML += `<p class="user-message"><b>Sen:</b> ${userInput}</p>`;
-
-            let response = "Kusura bakma, bunu tam anlayamadım. Neyi kastediyorsun?";
-            const lowerInput = userInput.toLowerCase();
-
-            if (lowerInput.includes("kelime öğret") || (lowerInput.includes("=") && !lowerInput.includes(" "))) {
-                response = simasiPulse.learnWord(userInput);
-            } else if (lowerInput.includes("öğret") || (lowerInput.includes("=") && lowerInput.includes(" "))) {
-                response = simasiPulse.learnSentence(userInput);
-            } else if (lowerInput.includes("nedir") || lowerInput.includes("çevir") || lowerInput.includes("ne demek")) {
-                const query = userInput.split(/nedir|çevir|ne demek/)[1]?.trim() || userInput.split(" ")[0].trim();
-                response = simasiPulse.translateOrQuery(query);
+        function toggleTheme() {
+            document.body.classList.toggle("light-mode");
+            const themeBtn = document.querySelector(".theme-toggle-btn");
+            const icon = themeBtn.querySelector("i");
+            if (document.body.classList.contains("light-mode")) {
+                icon.classList.remove("bi-moon-stars-fill");
+                icon.classList.add("bi-sun-fill");
+                themeBtn.innerHTML = `<i class="bi bi-sun-fill"></i> Mod`;
             } else {
-                response = simasiPulse.translateOrQuery(userInput);
+                icon.classList.remove("bi-sun-fill");
+                icon.classList.add("bi-moon-stars-fill");
+                themeBtn.innerHTML = `<i class="bi bi-moon-stars-fill"></i> Mod`;
             }
-
-            chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> ${response}</p>`;
-            chatbox.scrollTop = chatbox.scrollHeight;
-            document.getElementById("userInput").value = "";
-            return { userInput, response };
         }
 
         function toggleFormat() {
@@ -657,167 +1434,158 @@
             formatText.style.display = formatText.style.display === "block" ? "none" : "block";
         }
 
+        function toggleAdminModal() {
+            const modal = document.getElementById("adminModal");
+            const loginForm = document.getElementById("loginForm");
+            const logoutForm = document.getElementById("logoutForm");
+            const updateForm = document.getElementById("updateForm");
+            modal.style.display = "flex";
+            if (simasiPulse.isAdmin) {
+                loginForm.style.display = "none";
+                logoutForm.style.display = "block";
+                updateForm.style.display = "none";
+            } else {
+                loginForm.style.display = "block";
+                logoutForm.style.display = "none";
+                updateForm.style.display = "none";
+            }
+        }
+
+        function showUpdateForm() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("logoutForm").style.display = "none";
+            document.getElementById("updateForm").style.display = "block";
+        }
+
         function toggleVoiceOptions(type) {
             const speakOptions = document.getElementById("speakOptions");
-            const speakResponseOptions = document.getElementById("speakResponseOptions");
             const sendOptions = document.getElementById("sendOptions");
-
             if (type === "speak") {
                 speakOptions.style.display = speakOptions.style.display === "block" ? "none" : "block";
-                speakResponseOptions.style.display = "none";
                 sendOptions.style.display = "none";
-                document.getElementById("speakTr").checked = speakLang === "tr-TR";
-                document.getElementById("speakEn").checked = speakLang === "en-GB";
-            } else if (type === "speakResponse") {
-                speakResponseOptions.style.display = speakResponseOptions.style.display === "block" ? "none" : "block";
-                speakOptions.style.display = "none";
-                sendOptions.style.display = "none";
-                document.getElementById("responseTr").checked = responseLang === "tr-TR";
-                document.getElementById("responseEn").checked = responseLang === "en-GB";
             } else if (type === "send") {
                 sendOptions.style.display = sendOptions.style.display === "block" ? "none" : "block";
                 speakOptions.style.display = "none";
-                speakResponseOptions.style.display = "none";
-                document.getElementById("sendTr").checked = sendLang === "tr-TR";
-                document.getElementById("sendEn").checked = sendLang === "en-GB";
-                document.getElementById("sendNoVoice").checked = sendLang === null;
             }
         }
 
         function setSpeakLang(lang) {
-            speakLang = lang;
-            document.getElementById("speakOptions").style.display = "none";
-            speakText();
-        }
-
-        function setResponseLang(lang) {
-            responseLang = lang;
-            document.getElementById("speakResponseOptions").style.display = "none";
-            speakResponse();
+            const speakTr = document.getElementById("speakTr");
+            const speakEn = document.getElementById("speakEn");
+            if (lang === "tr-TR") {
+                speakTr.checked = true;
+                speakEn.checked = false;
+            } else if (lang === "en-GB") {
+                speakTr.checked = false;
+                speakEn.checked = true;
+            }
+            const text = document.getElementById("userInput").value.trim();
+            if (text && window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                let voices = window.speechSynthesis.getVoices();
+                if (!voices.length) {
+                    window.speechSynthesis.onvoiceschanged = function() {
+                        voices = window.speechSynthesis.getVoices();
+                        const voice = voices.find(v => v.lang === lang) || voices[0];
+                        utterance.voice = voice;
+                        window.speechSynthesis.speak(utterance);
+                    };
+                } else {
+                    const voice = voices.find(v => v.lang === lang) || voices[0];
+                    utterance.voice = voice;
+                    window.speechSynthesis.speak(utterance);
+                }
+                utterance.onerror = function(event) {
+                    const chatbox = document.getElementById("chatbox");
+                    chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                };
+            }
         }
 
         function sendWithVoice(lang) {
-            sendLang = lang;
-            document.getElementById("sendOptions").style.display = "none";
-            if (lang === null) {
-                sendMessage();
+            const sendTr = document.getElementById("sendTr");
+            const sendEn = document.getElementById("sendEn");
+            const sendNoVoice = document.getElementById("sendNoVoice");
+            if (lang === "tr-TR") {
+                sendTr.checked = true;
+                sendEn.checked = false;
+                sendNoVoice.checked = false;
+            } else if (lang === "en-GB") {
+                sendTr.checked = false;
+                sendEn.checked = true;
+                sendNoVoice.checked = false;
             } else {
-                speakResponse(lang);
+                sendTr.checked = false;
+                sendEn.checked = false;
+                sendNoVoice.checked = true;
             }
+            sendMessage(lang);
         }
 
-        function speakText() {
-            const userInput = document.getElementById("userInput").value.trim();
+        function sendMessage(voiceLang = null) {
+            const input = document.getElementById("userInput").value.trim();
             const chatbox = document.getElementById("chatbox");
+            if (!input) return;
 
-            if (!userInput) {
-                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirmek için bir şey yazman gerekiyor!</p>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-                return;
-            }
-
-            if (!window.speechSynthesis) {
-                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Maalesef tarayıcın sesli okumayı desteklemiyor!</p>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-                return;
-            }
-
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(userInput);
-
-            let voices = window.speechSynthesis.getVoices();
-            if (!voices.length) {
-                window.speechSynthesis.onvoiceschanged = function() {
-                    voices = window.speechSynthesis.getVoices();
-                    setVoiceForUtterance(utterance, voices, speakLang);
-                    window.speechSynthesis.speak(utterance);
-                };
+            chatbox.innerHTML += `<p class="user-message"><b>Sen:</b> ${input}</p>`;
+            let response = "";
+            if (simasiPulse.quizMode) {
+                simasiPulse.checkQuizAnswer(input);
+            } else if (input.includes("öğret")) {
+                if (input.includes("kelime öğret") || (input.includes("=") && !input.includes(" "))) {
+                    response = simasiPulse.learnWord(input);
+                } else {
+                    response = simasiPulse.learnSentence(input);
+                }
+            } else if (input.includes("favorilere ekle")) {
+                const word = input.split("favorilere ekle")[1]?.trim();
+                if (word) {
+                    const lowerWord = word.toLowerCase();
+                    const favoriteExists = simasiPulse.userProfile.favorites.some(fav => fav.toLowerCase() === lowerWord);
+                    if (!favoriteExists) {
+                        simasiPulse.userProfile.favorites.push(word);
+                        simasiPulse.saveUserProfile();
+                        response = `"${word}" favorilere eklendi!`;
+                    } else {
+                        response = `"${word}" zaten favorilerde!`;
+                    }
+                } else {
+                    response = `Lütfen favorilere eklemek için bir kelime veya cümle belirt!`;
+                }
             } else {
-                setVoiceForUtterance(utterance, voices, speakLang);
-                window.speechSynthesis.speak(utterance);
+                response = simasiPulse.translateOrQuery(input);
             }
 
-            utterance.onerror = function(event) {
-                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-            };
-        }
+            chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> ${response}</p>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+            document.getElementById("userInput").value = "";
 
-        function speakResponse(lang = responseLang) {
-            const userInput = document.getElementById("userInput").value.trim();
-            const chatbox = document.getElementById("chatbox");
-
-            if (!userInput) {
-                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, sesli yanıt verebilmem için bir şey yazman gerekiyor!</p>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-                return;
-            }
-
-            if (!window.speechSynthesis) {
-                chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Maalesef tarayıcın sesli okumayı desteklemiyor!</p>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-                return;
-            }
-
-            const { userInput: input, response } = sendMessage();
-            const combinedText = `${input}. ${response}`;
-            const utterance = new SpeechSynthesisUtterance(combinedText);
-
-            function speakWhenVoicesLoaded() {
+            if (voiceLang && window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(response);
+                utterance.lang = voiceLang;
                 let voices = window.speechSynthesis.getVoices();
-                if (voices.length === 0) {
+                if (!voices.length) {
                     window.speechSynthesis.onvoiceschanged = function() {
                         voices = window.speechSynthesis.getVoices();
-                        speakNow(voices);
+                        const voice = voices.find(v => v.lang === voiceLang) || voices[0];
+                        utterance.voice = voice;
+                        window.speechSynthesis.speak(utterance);
                     };
                 } else {
-                    speakNow(voices);
+                    const voice = voices.find(v => v.lang === voiceLang) || voices[0];
+                    utterance.voice = voice;
+                    window.speechSynthesis.speak(utterance);
                 }
-            }
-
-            function speakNow(voices) {
-                window.speechSynthesis.cancel();
-                setVoiceForUtterance(utterance, voices, lang);
-
                 utterance.onerror = function(event) {
                     chatbox.innerHTML += `<p class="bot-message"><b>SimasiPulse:</b> Üzgünüm, seslendirme sırasında bir hata oluştu: ${event.error}</p>`;
                     chatbox.scrollTop = chatbox.scrollHeight;
                 };
-                window.speechSynthesis.speak(utterance);
-            }
-
-            speakWhenVoicesLoaded();
-        }
-
-        function setVoiceForUtterance(utterance, voices, lang) {
-            utterance.lang = lang;
-            if (lang === "tr-TR") {
-                const maleVoice = voices.find(voice => voice.lang === "tr-TR") || voices[0];
-                utterance.voice = maleVoice;
-            } else if (lang === "en-GB") {
-                const ukMaleVoice = voices.find(voice => voice.lang === "en-GB") || voices[0];
-                utterance.voice = ukMaleVoice;
             }
         }
-
-        // Tema değiştirme fonksiyonu
-        function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.querySelector('.theme-toggle-btn');
-            body.classList.toggle('light-mode');
-            const isLightMode = body.classList.contains('light-mode');
-            themeBtn.innerHTML = `<i class="bi ${isLightMode ? 'bi-sun-fill' : 'bi-moon-stars-fill'}"></i> Mod`;
-            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
-        }
-
-        // Sayfa yüklendiğinde temayı kontrol et
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                document.querySelector('.theme-toggle-btn').innerHTML = `<i class="bi bi-sun-fill"></i> Mod`;
-            }
-        });
     </script>
 </body>
 </html>
